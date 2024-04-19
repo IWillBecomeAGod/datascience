@@ -1,0 +1,23 @@
+services:
+  jupiter-projet-leyenda:
+    build:
+      context: .
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/projet_leyenda
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    # entrypoint: ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--no-browser"]
+    entrypoint: ["jupyter", "server", "--ip=0.0.0.0", "--allow-root", "--no-browser"]
+    networks:
+      - jupiter-projet-leyenda-network
+    cpuset: '0-6'
+networks:
+  jupiter-projet-leyenda-network:
+    driver: bridge
